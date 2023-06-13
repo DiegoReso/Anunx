@@ -4,9 +4,14 @@ import {
   TextField,
   Typography,
   MenuItem,
-  Select,InputLabel,
+  Select,
+  InputLabel,
   Button,
-  IconButton } from '@material-ui/core'
+  IconButton, 
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+ } from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core'
 import { DeleteForever } from '@material-ui/icons'
@@ -243,6 +248,22 @@ const Publish = () =>{
             variant='outlined'
             fullWidth
           />
+        </Box>
+      </Container>
+
+      <Container maxWidth="md" className={classes.boxContainer}>
+        <Box className={classes.box}>
+          <Typography component="h6" variant="h6" color="textPrimary" gutterBottom>
+            Preço
+          </Typography>
+          <FormControl fullWidth variant='outlined'>
+            <InputLabel>Valor</InputLabel>
+            <OutlinedInput
+              onChange={()=>{}}
+              startAdornment={<InputAdornment position='start'>R$</InputAdornment>}
+              labelWidth={40}
+              />
+          </FormControl>
         </Box>
       </Container>
 
