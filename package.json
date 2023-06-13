@@ -13,10 +13,12 @@
     "@material-ui/icons": "^4.11.3",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.5",
+    "formik": "2.2.9",
     "next": "12.3.0",
     "react": "17.0.0",
     "react-dom": "17.0.0",
     "react-dropzone": "11.3.4",
-    "react-material-ui-carousel": "2.2.7"
+    "react-material-ui-carousel": "2.2.7",
+    "yup": "0.32.9"
   }
 }
