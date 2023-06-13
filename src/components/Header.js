@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) =>({
   title:{
     flexGrow: 1,
   },
+  typographySpace:{
+    marginLeft: '10px',
+  },
+  divider:{
+    margin: '8px 0'
+  }
 }))
 
 
@@ -33,7 +39,7 @@ export default function ButtonAppBar() {
   return (
     
       <AppBar position="static" elevation={3}>
-        <Container>
+        <Container maxWidth='lg'>
           <Toolbar>
             <Typography className={classes.root} variant="h6" component="div"  >
               Anunx
@@ -41,7 +47,8 @@ export default function ButtonAppBar() {
             <Link href="/user/publish" passHref>
               <Button color="secondary" variant="outlined">ANUNCIAR E VENDER</Button>
             </Link>
-            <IconButton 
+            <IconButton
+              
               onClick={(e) => setAnchorUserMenu(e.currentTarget)}
               color='secondary'>
 
@@ -52,7 +59,7 @@ export default function ButtonAppBar() {
                   : <AccountCircle/>
 
               }
-              <Typography sx={{ml:'10px'}} variant="subtitle2" color="secondary">
+              <Typography className={classes.typographySpace} variant="subtitle2" color="secondary">
                 Diego Reis
               </Typography>
 
@@ -61,8 +68,10 @@ export default function ButtonAppBar() {
               anchorEl={anchorUserMenu}
               open={openUserMenu}
               onClose={() => setAnchorUserMenu(null)}
-              sx={{mt: '12px'}}
-              color='primary'
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal:'right',
+              }}
             >
               <Link href='user/dashboard' passHref>
                 <MenuItem>
@@ -78,10 +87,9 @@ export default function ButtonAppBar() {
                   </Typography>
                 </MenuItem>
               </Link>
-              <Divider/>
+              <Divider className={classes.divider}/>
               <MenuItem>Sair</MenuItem>
             </Menu>
-
           </Toolbar>
         </Container>
       </AppBar>
