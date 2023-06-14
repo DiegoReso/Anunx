@@ -14,12 +14,13 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Formik } from 'formik'
-import axios from 'axios'
 
+import { signIn, useSession} from 'next-auth/client'
 
 import TemplateDefault from '../../../src/templates/Default'
 import {initialValues, validationSchema} from './formValidationSignIn'
-import useToasty from '../../../src/contexts/Toasty'
+import { Alert } from '@material-ui/lab'
+
 
 const styleBox = {
   bgcolor: 'white',
@@ -31,29 +32,27 @@ const styleBox = {
 const useStyles = makeStyles(()=>({
   styleSubmit:{
     padding: '13px'
+  },
+  errorMessage:{
+    margin: '20px 0'
   }
 }))
 
 const SignIn =()=>{
 
   const classes = useStyles()
-  const {setToasty} = useToasty()
+
   
   const router = useRouter()
+   const [session] = useSession()
+  console.log(session)
 
   const handleFormSubmit = async values => {
-    const response = await axios.post('/api/users',values)
-
-
-    if(response.data.success){
-      setToasty({
-        open: true,
-        severity: 'success',
-        text: 'Cadastro realizado com sucesso'
+      signIn('credentials',{
+        email: values.email,
+        password: values.password,
+        callbackUrl: 'http://localhost:3000/user/dashboard'
       })
-
-      router.push('/auth/signin')
-    }
   }
 
 
@@ -76,20 +75,28 @@ const SignIn =()=>{
             
 
          return(
-          <form onSubmit={handleSubmit}>       
+          <form onSubmit={handleSubmit}>   
             <Container maxWidth="md">
+           {
+
+            router.query.i === '1'
+            ?(
+              <Alert severity='error' className={classes.errorMessage}>
+                Usuário não encontrado!
+              </Alert>
+            )
+
+            : null
+           }
+
               <Box sx={styleBox}>
               <Typography
                 align='center' 
                 component="h2" 
                 variant="h2">
-                Crie sua conta
+                Entre na sua conta
               </Typography>
-              <Typography
-                component="p"
-                align='center'>
-                E anuncie para todo o Brasil
-              </Typography>
+             
               
 
               <FormControl

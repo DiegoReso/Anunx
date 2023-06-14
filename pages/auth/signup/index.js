@@ -196,7 +196,7 @@ const SignUp =()=>{
                 Já tem uma conta? 
                 <Link 
                    
-                  href="/signin" 
+                  href="/auth/signin" 
                   passHref>
                     Entre aqui
                 </Link>
