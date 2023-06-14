@@ -1,5 +1,5 @@
 import dbConnect from "../../src/utils/dbConnect"
-
+import UsersModel from '../../src/models/users'
 
 const users = async(req,res) =>{
   const {method} = req
@@ -9,6 +9,26 @@ const users = async(req,res) =>{
        await dbConnect()
       res.status(200).json({success: true})
       break
+
+    case 'POST':
+
+      const {
+        name,
+        email,
+        password,  
+      } = req.body
+
+      await dbConnect()
+
+      const user = new UsersModel({
+        name,
+        email,
+        password,
+      })
+
+      user.save()
+
+      res.status(201).json({success:true})
   }
 }
 
