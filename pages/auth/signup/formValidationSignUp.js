@@ -26,9 +26,6 @@ const validationSchema = yup.object().shape({
   .required('Campo Obrigatório')
   .oneOf([yup.ref('password'),null], 'As senhas precisam ser iguais')
 
-
-
-
 })
 
 export {

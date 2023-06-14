@@ -1,14 +1,25 @@
 
-
-import { Box, Button, Container, FormControl, FormHelperText, Input, InputLabel, Typography, CircularProgress } from '@material-ui/core'
-import TemplateDefault from '../../src/templates/Default'
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  Typography,
+  CircularProgress,
+  makeStyles
+} from '@material-ui/core'
 import Link from 'next/link'
-
-import { Formik } from 'formik'
-import {initialValues, validationSchema} from './formValidationSignUp'
-
-
 import { useRouter } from 'next/router'
+import { Formik } from 'formik'
+import axios from 'axios'
+
+
+import TemplateDefault from '../../../src/templates/Default'
+import {initialValues, validationSchema} from './formValidationSignUp'
+import useToasty from '../../../src/contexts/Toasty'
 
 const styleBox = {
   bgcolor: 'white',
@@ -17,15 +28,32 @@ const styleBox = {
   mb: '10px'
 }
 
+const useStyles = makeStyles(()=>({
+  styleSubmit:{
+    padding: '13px'
+  }
+}))
 
 const SignUp =()=>{
 
-  // const {setToasty} = useToasty()
+  const classes = useStyles()
+  const {setToasty} = useToasty()
   
   const router = useRouter()
 
   const handleFormSubmit = async values => {
-    console.log(values)
+    const response = await axios.post('/api/users',values)
+
+
+    if(response.data.success){
+      setToasty({
+        open: true,
+        severity: 'success',
+        text: 'Cadastro realizado com sucesso'
+      })
+
+      router.push('/auth/signin')
+    }
   }
 
 
@@ -139,23 +167,25 @@ const SignUp =()=>{
               </FormControl>
               {
                 isSubmitting
-                ? (
-                  <Box 
-                    sx={{display: 'flex',
-                    justifyContent: 'center',
-                    mt:'20px'
-                    }}>
-                    <CircularProgress/> 
-                 </Box>)
-                : (
-                <Button
+                ? (<Button
                   
                   type="submit"
                   variant='contained'
                   color='primary'
                   fullWidth>
+                    <CircularProgress color='secondary'/> 
+                  </Button>
+                  )
+                : (
+                  <Button
+                    className={classes.styleSubmit}
+                    type="submit"
+                    variant='contained'
+                    color='primary'
+                    fullWidth>
                   Cadastrar 
                  </Button>
+                
                 )
               }
              
@@ -165,7 +195,7 @@ const SignUp =()=>{
                 >
                 Já tem uma conta? 
                 <Link 
-                  className="listStyle" 
+                   
                   href="/signin" 
                   passHref>
                     Entre aqui
