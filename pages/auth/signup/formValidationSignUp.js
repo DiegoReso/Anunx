@@ -19,7 +19,7 @@ const validationSchema = yup.object().shape({
     .required('Campo Obrigatório'),
 
   password: yup.string()
-    .min(8, 'Defina uma senha forte' )
+    .min(1, 'Defina uma senha forte' )
     .required('Campo Obrigatório'),
 
   confirm_password: yup.string()

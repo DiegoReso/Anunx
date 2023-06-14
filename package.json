@@ -19,6 +19,7 @@
     "formik": "2.2.9",
     "mongoose": "5.13.3",
     "next": "12.3.0",
+    "next-connect": "0.10.1",
     "react": "17.0.0",
     "react-dom": "17.0.0",
     "react-dropzone": "11.3.4",
