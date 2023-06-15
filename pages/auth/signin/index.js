@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme)=>({
 
 }))
 
-const SignIn =()=>{
+const SignIn =({APP_URL})=>{
 
   const classes = useStyles()
 
@@ -71,7 +71,7 @@ const SignIn =()=>{
 
   const handleGoogleLogin = ()=>{
     signIn('google',{
-      callbackUrl: 'http://localhost:3000/user/dashboard' 
+      callbackUrl: `${APP_URL}/user/dashboard` 
     })
   }
 
@@ -79,7 +79,7 @@ const SignIn =()=>{
       signIn('credentials',{
         email: values.email,
         password: values.password,
-        callbackUrl: 'http://localhost:3000/user/dashboard'
+        callbackUrl: `${APP_URL}/user/dashboard`
       })
   }
 
@@ -237,6 +237,14 @@ const SignIn =()=>{
           </TemplateDefault>
   )
 }
+
+SignIn.getServerSideProps = async function(){
+  return{
+    APP_URL : process.env.APP_URL
+  }
+    
+}
+
 
 
 export default SignIn
