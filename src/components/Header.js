@@ -85,14 +85,14 @@ export default function ButtonAppBar() {
                 horizontal:'right',
               }}
             >
-              <Link href='user/dashboard' passHref>
+              <Link href='/user/dashboard' passHref>
                 <MenuItem>
                   <Typography color="primary">
                     Meus anúncios
                   </Typography>
                 </MenuItem>
               </Link>
-              <Link href='user/publish' passHref>
+              <Link href='/user/publish' passHref>
                 <MenuItem>
                 <Typography color="primary">
                     Publicar anúncio
