@@ -20,6 +20,7 @@ import { signIn, useSession} from 'next-auth/client'
 import TemplateDefault from '../../../src/templates/Default'
 import {initialValues, validationSchema} from './formValidationSignIn'
 import { Alert } from '@material-ui/lab'
+import Image from 'next/image'
 
 
 const styleBox = {
@@ -29,13 +30,33 @@ const styleBox = {
   mb: '10px'
 }
 
-const useStyles = makeStyles(()=>({
+const useStyles = makeStyles((theme)=>({
   styleSubmit:{
     padding: '13px'
   },
   errorMessage:{
     margin: '20px 0'
+  },
+  orSeparator:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center',
+    backgroundColor:'#e8e8e8',
+    width:'100%',
+    height:1,
+    margin: theme.spacing(7,0,4),
+
+    '& span':{
+      backgroundColor: 'white',
+      padding: '8px 30px'
+    }
+  },
+  buttonGoogle:{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '50px'
   }
+
 }))
 
 const SignIn =()=>{
@@ -47,7 +68,14 @@ const SignIn =()=>{
    const [session] = useSession()
   console.log(session)
 
-  const handleFormSubmit = async values => {
+
+  const handleGoogleLogin = ()=>{
+    signIn('google',{
+      callbackUrl: 'http://localhost:3000/user/dashboard' 
+    })
+  }
+
+  const handleFormSubmit =  values => {
       signIn('credentials',{
         email: values.email,
         password: values.password,
@@ -75,7 +103,38 @@ const SignIn =()=>{
             
 
          return(
-          <form onSubmit={handleSubmit}>   
+          <form onSubmit={handleSubmit}>  
+
+          <Container>
+
+            <Typography
+                align='center' 
+                component="h2" 
+                variant="h2">
+                Entre na sua conta
+            </Typography>
+
+            <Box className={classes.buttonGoogle}>
+              <Button
+                variant='contained'
+                color='primary'
+                startIcon={
+                  <Image
+                    src="/images/logo_google.svg"
+                    width={20}  
+                    height={20}
+                    alt='Login with google'
+                  />  
+                }
+                onClick={handleGoogleLogin}>
+                  Entrar com Google
+              </Button>
+            </Box>
+              <Box className={classes.orSeparator}>
+                <span>ou</span>
+
+              </Box>
+          </Container> 
             <Container maxWidth="md">
            {
 
@@ -89,16 +148,8 @@ const SignIn =()=>{
             : null
            }
 
-              <Box sx={styleBox}>
-              <Typography
-                align='center' 
-                component="h2" 
-                variant="h2">
-                Entre na sua conta
-              </Typography>
-             
-              
-
+            <Box sx={styleBox}>
+            
               <FormControl
                 error={errors.email}
                 
