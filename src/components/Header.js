@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { AccountCircle } from '@material-ui/icons';
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
-
+import { useSession,signOut } from 'next-auth/client';
 
 const useStyles = makeStyles((theme) =>({
   root:{
@@ -33,6 +33,8 @@ export default function ButtonAppBar() {
 
   const classes = useStyles()
 
+  const [session] = useSession()
+
   const [anchorUserMenu,setAnchorUserMenu] = useState(false)
   const openUserMenu = Boolean(anchorUserMenu)
 
@@ -44,26 +46,36 @@ export default function ButtonAppBar() {
             <Typography className={classes.root} variant="h6" component="div"  >
               Anunx
             </Typography>
-            <Link href="/user/publish" passHref>
+            <Link href={ session ? '/user/publish' : 'auth/signin'} passHref>
+
               <Button color="secondary" variant="outlined">ANUNCIAR E VENDER</Button>
             </Link>
-            <IconButton
-              
-              onClick={(e) => setAnchorUserMenu(e.currentTarget)}
-              color='secondary'>
+            {
+              session
+              ?(
+                <IconButton
+                
+                  onClick={(e) => setAnchorUserMenu(e.currentTarget)}
+                  color='secondary'>
 
               {
 
-                true === false
-                  ? <Avatar src=""/>
+                session.user.image
+                  ? <Avatar src={session.user.image}/>
                   : <AccountCircle/>
 
               }
               <Typography className={classes.typographySpace} variant="subtitle2" color="secondary">
-                Diego Reis
+                {session.user.name}
               </Typography>
 
             </IconButton>
+            
+              )
+
+              : null
+            }
+            
             <Menu
               anchorEl={anchorUserMenu}
               open={openUserMenu}
@@ -88,7 +100,7 @@ export default function ButtonAppBar() {
                 </MenuItem>
               </Link>
               <Divider className={classes.divider}/>
-              <MenuItem>Sair</MenuItem>
+              <MenuItem onClick={() => signOut({callbackUrl: 'http://localhost:3000' })}>Sair</MenuItem>
             </Menu>
           </Toolbar>
         </Container>
