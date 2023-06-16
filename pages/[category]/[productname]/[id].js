@@ -9,10 +9,13 @@ import {
   Grid,
   Typography
 } from '@material-ui/core'
-import TemplateDefault from '../../src/templates/Default'
+import TemplateDefault from '../../../src/templates/Default'
 import Carousel from 'react-material-ui-carousel'
 
 import { makeStyles } from '@material-ui/core/styles'
+import dbConnect from '../../../src/utils/dbConnect'
+import ProductsModel from  '../../../src/models/products'
+import { formatCurrency } from '../../../src/utils/currency'
 
 const useStyles = makeStyles((theme)=>({
   box:{
@@ -36,7 +39,7 @@ const useStyles = makeStyles((theme)=>({
   
 }))
 
-const Products =() =>{
+const Products =({product}) =>{
 
   const classes= useStyles()
 
@@ -50,21 +53,18 @@ const Products =() =>{
                 autoPlay={false}
                 animation="slide"
               >
-                <Card className={classes.card} >
+                {
+                  product.files.map(file=>(
+                    <Card key={product.name} className={classes.card} >
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random/500x500/?brasil"
-                    title="Titulo da imagem"
+                    image={`/uploads/${file.name}`}
+                    title={product.title}
                   />
                 </Card>
-
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random/500x500/?patriots"
-                    title="Titulo da imagem"
-                  />
-                </Card>
+                  ))
+                }
+              
               </Carousel>
             </Box>
          
@@ -73,26 +73,19 @@ const Products =() =>{
             <Box className={classes.box}>
               <Typography component="span" variant="caption" className={classes.titles} >Publicado 16 de junho de 2021</Typography>
                 
-              <Typography component="h4" variant="h4" className={classes.productName}>Jaguar XE 2.0 </Typography>
+              <Typography component="h4" variant="h4" className={classes.productName}>{product.title}</Typography>
 
-              <Typography component="h4" variant="h4" className={classes.price} >R$ 50.000,00</Typography>
+              <Typography component="h4" variant="h4" className={classes.price} >{formatCurrency(product.price)}</Typography>
               
-              <Chip label="Categoria"/>
+              <Chip label={product.category}/>
             </Box>
 
             <Box className={classes.box}>
               <Typography component="h6" variant="h6" >
-                Descrição
+                {product.description}
               </Typography>
 
-              <Typography  ypography component="p" variant="body2" >
-
-                Mussum Ipsum, cacilds vidis litro abertis. Manduma pindureta quium dia nois paga.Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose.Mé faiz elementum girarzis, nisi eros vermeio.Quem manda na minha terra sou euzis!
-
-                Manduma pindureta quium dia nois paga.Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.Quem num gosta di mé, boa gentis num é.Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo, vitae iaculis nisl.
-
-              </Typography>
-
+            
             </Box>
           </Grid>
 
@@ -100,18 +93,22 @@ const Products =() =>{
             <Card elevation={0}  className={classes.box}>
               <CardHeader 
                 avatar={
-                  <Avatar>D</Avatar>
+                  <Avatar src={product.user.image}>
+                    {
+                      product.user.image || product.user.name[0]
+                    }
+                  </Avatar>
                 }
-                title="Diego Reis"
-                subheader="diegoreso@me.com"
+                title={product.user.name}
+                subheader={product.user.email}
               />
               <CardMedia
-                image="https://source.unsplash.com/random/500x500/?brazil"
-                title="Diego Reis"
+                image={product.user.image}
+                title={product.user.name}
               />
             </Card>
             
-            <Box className={classes.box} >
+            <Box className={classes.box}>
 
               <Typography component="h6" variant="h6">
                 Localização
@@ -127,5 +124,19 @@ const Products =() =>{
   )
 }
 
+
+export async function getServerSideProps({query}){
+  const {id} = query
+    await dbConnect()
+
+    const product = await ProductsModel.findOne({_id:id})
+
+    return{
+      props:{
+        product : JSON.parse(JSON.stringify(product))
+      }
+    }
+
+}
 
 export default Products

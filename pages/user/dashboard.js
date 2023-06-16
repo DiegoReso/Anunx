@@ -12,6 +12,7 @@ import Card from '@/src/components/Card'
 import { getSession } from 'next-auth/client'
 import dbConnect from '@/src/utils/dbConnect'
 import ProductsModel from '../../src/models/products'
+import { formatCurrency } from '../../src/utils/currency'
 
 const useStyles = makeStyles((theme)=>({
   container:{
@@ -47,7 +48,7 @@ const Home = ({products}) =>{
               <Card 
                 image={`/uploads/${product.files[0].name}`}
                 title={product.title}
-                subtitle={product.price}
+                subtitle={formatCurrency(product.price)}
                 actions={
                   <>
                     <CardActions>
