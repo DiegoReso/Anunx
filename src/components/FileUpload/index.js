@@ -13,11 +13,9 @@ const classes = useStyles()
   const {getRootProps,getInputProps} = useDropzone({
     accept: 'image/*',
     onDrop: (acceptedFiles)=>{
-      const newFiles = acceptedFiles.map(file=>{
-        return Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })
-      })
+      const newFiles = acceptedFiles.map( file => Object.assign(file,{
+        preview :URL.createObjectURL(file)
+      }))
 
       setFieldValue('files',[
         ...files,
