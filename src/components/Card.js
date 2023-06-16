@@ -30,10 +30,10 @@ const Card =({image, title, subtitle, actions})=>{
       />
       <CardContent>
         <Typography variant="h5" component="h2">
-          Produto X
+          {title}
         </Typography>
         <Typography>
-          R$ 60,00
+          {subtitle}
         </Typography>
       </CardContent>
         {

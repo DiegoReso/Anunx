@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import TemplateDefault from '../src/templates/Default'
 import Card from '@/src/components/Card'
 
+
+
 const useStyles = makeStyles((theme)=>({
   searchContainer:{
     padding: theme.spacing(8,10,6)
@@ -34,6 +36,7 @@ const Home =()=>{
 
   const classes = useStyles()
 
+  
 
   return(
 
@@ -97,5 +100,8 @@ const Home =()=>{
     </TemplateDefault>
   )
 }
+
+
+
 
 export default Home
