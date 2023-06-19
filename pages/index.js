@@ -16,6 +16,8 @@ import ProductsModel from '../src/models/products'
 import { formatCurrency } from '../src/utils/currency'
 import Link from 'next/link'
 import slugify from 'slugify'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme)=>({
   searchContainer:{
@@ -33,16 +35,20 @@ const useStyles = makeStyles((theme)=>({
   productLink:{
     textDecoration: 'none'
   }
-
-
 }))
 
 
 const Home =({products})=>{
-
+  const router = useRouter()
+  const[search,setSearch] =useState()
   const classes = useStyles()
 
-  
+
+  const handleConfirmSearch =()=>{
+    router.push({
+      pathname: `/search/${search}`
+    })
+  }
 
   return(
 
@@ -54,10 +60,11 @@ const Home =({products})=>{
         
         <Paper className={classes.searchBox}>
           <InputBase
+          onChange={(e)=> setSearch(e.target.value)}
             placeholder='Ex.: Iphone 12 com garantia'
             fullWidth
-            />
-          <IconButton>
+          />
+          <IconButton onClick={()=>handleConfirmSearch()}>
             <SearchIcon/>
           </IconButton>
         </Paper>
@@ -92,9 +99,7 @@ const Home =({products})=>{
 
           </Grid>
 
-        
       </Container>
-
 
     </TemplateDefault>
   )
@@ -103,6 +108,8 @@ const Home =({products})=>{
 
 
 export async function getServerSideProps(){
+  
+
   await dbConnect()
 
   const products = await ProductsModel.aggregate([{
@@ -111,7 +118,7 @@ export async function getServerSideProps(){
 
   return{
     props:{
-      products: JSON.parse(JSON.stringify(products))
+      products: JSON.parse(JSON.stringify(products)),
     }
   }
 

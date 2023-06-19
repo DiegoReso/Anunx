@@ -13,6 +13,7 @@ import { useSession,signOut } from 'next-auth/client';
 const useStyles = makeStyles((theme) =>({
   root:{
     flexGrow:1,
+    textDecoration:'none'
   },
   menuButton:{
     marginright: theme.spacing(2),
@@ -25,6 +26,11 @@ const useStyles = makeStyles((theme) =>({
   },
   divider:{
     margin: '8px 0'
+  },
+  linkStyle:{
+    textDecoration: 'none',
+    color: 'white'
+
   }
 }))
 
@@ -43,8 +49,13 @@ export default function ButtonAppBar() {
       <AppBar position="static" elevation={3}>
         <Container maxWidth='lg'>
           <Toolbar>
-            <Typography className={classes.root} variant="h6" component="div"  >
-              Anunx
+            <Typography className={classes.root} variant="h6" component="div" color="secondary" >
+              <Link  href='/' passHref>
+                <a className={classes.linkStyle}>
+                Anunx
+                </a>
+              </Link>
+             
             </Typography>
             <Link href={ session ? '/user/publish' : 'auth/signin'} passHref>
 
