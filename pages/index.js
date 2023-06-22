@@ -19,6 +19,7 @@ import slugify from 'slugify'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
+
 const useStyles = makeStyles((theme)=>({
   searchContainer:{
     padding: theme.spacing(8,10,6)
